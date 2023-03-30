@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 
 import { hashSync } from 'bcryptjs';
+import { Exclude } from 'class-transformer';
 
 @Entity('user')
 export class User {
@@ -21,6 +22,7 @@ export class User {
   @Column({ length: 100, default: '' })
   nickname: string;
 
+  @Exclude()
   @Column()
   password: string;
 

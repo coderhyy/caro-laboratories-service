@@ -1,26 +1,35 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-// import { UsersModule } from './modules/users/users.module';
-import { AuthModule } from './modules/auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { APP_GUARD } from '@nestjs/core';
 import { TokenGuard } from './guard/token.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoodsModule } from './modules/goods/goods.module';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
+
+import envConfig from '../config/env';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      port: 3306,
-      type: 'mysql',
-      username: 'root',
-      host: 'localhost',
-      charset: 'utf8mb4',
-      password: 'root',
-      database: 'caro_laboratories',
-      synchronize: true, // 根据实体自动创建数据库表， 生产环境建议关闭
-      autoLoadEntities: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [envConfig.path],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DB_HOST', 'localhost'),
+        port: configService.get<number>('DB_PORT', 3306),
+        username: configService.get('DB_USER', 'root'),
+        password: configService.get('DB_PASSWORD', 'root'),
+        charset: 'utf8mb4',
+        database: configService.get('DB_DATABASE', 'caro_laboratories'),
+        synchronize: true, // 根据实体自动创建数据库表， 生产环境建议关闭
+        autoLoadEntities: true,
+      }),
     }),
     AuthModule,
     GoodsModule,
@@ -28,10 +37,10 @@ import { UserModule } from './modules/user/user.module';
   ],
   controllers: [],
   providers: [
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: TokenGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: TokenGuard,
+    },
   ],
 })
 export class AppModule {}

@@ -1,14 +1,20 @@
-import { Controller, Get, Response } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { NoAuth } from '../../guard/noauth';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get()
-  @NoAuth()
-  getToken(@Response() res) {
-    return this.authService.getToken(res);
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Post('login')
+  async create(@Body() user: LoginDto) {
+    return await this.authService.login(user);
   }
 }
