@@ -1,48 +1,30 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { compareSync } from 'bcryptjs';
-import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
-import { LoginDto } from './dto/login.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private userService: UserService,
   ) {}
 
   createToken(user: Partial<User>) {
     return this.jwtService.sign(user);
   }
 
-  testToken(req) {
-    const token = req.headers.token;
-    return this.jwtService.verify(token);
-  }
-
-  async login(user: LoginDto) {
-    const { username, password } = user;
-
-    const existUser = await this.userRepository.findOne({
-      where: { username },
-    });
-
-    if (!existUser) {
-      throw new BadRequestException('用户名不正确！');
-    }
-
-    if (!compareSync(password, existUser.password)) {
-      throw new BadRequestException('密码错误！');
-    }
-
+  async login(user: Partial<User>) {
     const token = this.createToken({
-      id: existUser.id,
-      username: existUser.username,
-      role: existUser.role,
+      id: user.id,
+      username: user.username,
+      role: user.role,
     });
 
     return { token };
+  }
+
+  async getUser(user) {
+    return await this.userService.findOne(user.id);
   }
 }

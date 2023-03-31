@@ -8,10 +8,13 @@ import {
   Delete,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -23,6 +26,12 @@ export class UserController {
     return this.userService.register(createUser);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('getUserInfo')
+  getUserInfo(@Req() req) {
+    return req.user;
+  }
+
   @Get()
   findAll() {
     return this.userService.findAll();
@@ -30,7 +39,7 @@ export class UserController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')
