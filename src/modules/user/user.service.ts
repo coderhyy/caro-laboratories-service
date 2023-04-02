@@ -1,18 +1,21 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    private roleService: RoleService,
   ) {}
 
-  async register(createUser: CreateUserDto) {
-    const { username } = createUser;
+  async register(user: CreateUserDto) {
+    const { username, roleId } = user;
 
     const existUser = await this.userRepository.findOne({
       where: { username },
@@ -22,24 +25,61 @@ export class UserService {
       throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST);
     }
 
-    const newUser = await this.userRepository.create(createUser);
+    const role = roleId ? await this.roleService.findById(roleId) : null;
+
+    const newUser = await this.userRepository.create({
+      ...user,
+      role,
+    });
 
     return await this.userRepository.save(newUser);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(query) {
+    const { keyWords = '', page = 1, pageSize = 10 } = query;
+
+    const [list, total] = await this.userRepository.findAndCount({
+      relations: ['role'],
+      where: {
+        username: Like(`%${keyWords}%`),
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    return { list, total };
   }
 
   async findOne(id: string) {
-    return await this.userRepository.findOne({ where: { id } });
+    return await this.userRepository.findOne({
+      relations: ['role'],
+      where: { id },
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, user: UpdateUserDto) {
+    const existUser = await this.findOne(id);
+
+    if (!existUser) {
+      throw new HttpException(`id为${id}的用户不存在`, HttpStatus.BAD_REQUEST);
+    }
+
+    const { roleId } = user;
+    const role = roleId
+      ? await this.roleService.findById(roleId)
+      : existUser.role;
+
+    const updateUser = this.userRepository.merge(existUser, user, { role });
+    return await this.userRepository.save(updateUser);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const existUser = await this.findOne(id);
+
+    if (!existUser) {
+      throw new HttpException(`id为${id}的用户不存在`, HttpStatus.BAD_REQUEST);
+    }
+
+    return await this.userRepository.softRemove(existUser);
   }
 }

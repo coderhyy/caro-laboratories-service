@@ -4,9 +4,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TokenGuard } from './guard/token.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GoodsModule } from './modules/goods/goods.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { RoleModule } from './modules/role/role.module';
+import { MenuModule } from './modules/menu/menu.module';
+import { FileModule } from './modules/file/file.module';
 
 import envConfig from '../config/env';
 
@@ -32,8 +34,10 @@ import envConfig from '../config/env';
       }),
     }),
     AuthModule,
-    GoodsModule,
     UserModule,
+    RoleModule,
+    MenuModule,
+    FileModule,
   ],
   controllers: [],
   providers: [

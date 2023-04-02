@@ -2,7 +2,9 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   Timestamp,
   UpdateDateColumn,
@@ -10,6 +12,7 @@ import {
 
 import { hashSync } from 'bcryptjs';
 import { Exclude } from 'class-transformer';
+import { Role } from '../../role/entities/role.entity';
 
 @Entity('user')
 export class User {
@@ -23,23 +26,26 @@ export class User {
   nickname: string;
 
   @Exclude()
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column({ default: '' })
   avatar: string;
 
-  @Column({ default: '' })
-  role: string;
-
   @CreateDateColumn({ type: 'timestamp' })
-  createTime: Timestamp;
+  createDate: Timestamp;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updateTime: Timestamp;
+  updateDate: Timestamp;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deleteDate: Timestamp;
 
   @BeforeInsert()
   encryptPwd() {
     this.password = hashSync(this.password, 10);
   }
+
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
 }
