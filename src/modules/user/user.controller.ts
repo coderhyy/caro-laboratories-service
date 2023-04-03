@@ -8,19 +8,23 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Req,
-  UseGuards,
   Query,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { RoleService } from '../role/role.service';
 
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly roleService: RoleService,
+  ) {}
 
   @Post('register')
   create(@Body() createUser: CreateUserDto) {
@@ -31,6 +35,13 @@ export class UserController {
   @Get('getUserInfo')
   getUserInfo(@Req() req) {
     return req.user;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('menu')
+  async getUserMenuList(@Req() req) {
+    const role = await this.roleService.findById(req.user.role?.id);
+    return role.menus;
   }
 
   @Get('list')

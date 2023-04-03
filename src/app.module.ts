@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { APP_GUARD } from '@nestjs/core';
-import { TokenGuard } from './guard/token.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -42,11 +40,6 @@ import envConfig from '../config/env';
     GoodsModule,
   ],
   controllers: [],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: TokenGuard,
-    },
-  ],
+  providers: [],
 })
 export class AppModule {}

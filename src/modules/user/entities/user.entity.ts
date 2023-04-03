@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -26,7 +27,7 @@ export class User {
   nickname: string;
 
   @Exclude()
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column({ default: '' })
@@ -41,6 +42,7 @@ export class User {
   @DeleteDateColumn({ type: 'timestamp' })
   deleteDate: Timestamp;
 
+  @BeforeUpdate()
   @BeforeInsert()
   encryptPwd() {
     this.password = hashSync(this.password, 10);

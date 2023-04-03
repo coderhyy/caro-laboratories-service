@@ -26,35 +26,35 @@ export class Menu {
   @Column({ length: 100 })
   name: string;
 
-  @Column({ length: 100, default: '', comment: '菜单编码，用于后端权限控制' })
-  menuCode: string;
+  // @Column({ length: 100, default: '', comment: '菜单编码，用于后端权限控制' })
+  // menuCode: string;
 
-  @Column({
-    type: 'enum',
-    enum: NodeType,
-    default: NodeType.FOLDER,
-    comment: '节点类型，可以是文件夹、页面或者按钮类型',
-  })
-  nodeType: NodeType;
+  // @Column({
+  //   type: 'enum',
+  //   enum: NodeType,
+  //   default: NodeType.FOLDER,
+  //   comment: '节点类型，可以是文件夹、页面或者按钮类型',
+  // })
+  // nodeType: NodeType;
 
-  @Column({ default: '' })
-  iconUrl: string;
+  // @Column({ default: '' })
+  // iconUrl: string;
 
-  @Column({ type: 'int', default: 0 })
-  sort: number;
+  // @Column({ type: 'int', default: 0 })
+  // sort: number;
 
-  @Column({
-    default: '',
-    comment: '页面对应的地址，如果是文件夹或者按钮类型，可以为空',
-  })
-  linkUrl: string;
+  // @Column({
+  //   default: '',
+  //   comment: '页面对应的地址，如果是文件夹或者按钮类型，可以为空',
+  // })
+  // linkUrl: string;
 
-  @Column({
-    type: 'int',
-    nullable: true,
-    comment: '菜单树的层次，以便于查询指定层级的菜单',
-  })
-  level: number;
+  // @Column({
+  //   type: 'int',
+  //   nullable: true,
+  //   comment: '菜单树的层次，以便于查询指定层级的菜单',
+  // })
+  // level: number;
 
   @Column({
     nullable: true,
@@ -63,8 +63,11 @@ export class Menu {
   })
   path: string;
 
-  @DeleteDateColumn()
-  deleteDate: Timestamp;
+  @Column('simple-json', { nullable: true })
+  meta: Record<string, any>;
+
+  // @DeleteDateColumn()
+  // deleteDate: Timestamp;
 
   @TreeChildren()
   children: Menu[];
