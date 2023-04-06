@@ -2,8 +2,8 @@ import {
   Controller,
   Post,
   UseInterceptors,
-  UploadedFile,
   HttpException,
+  UploadedFile,
 } from '@nestjs/common';
 import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -40,6 +40,7 @@ export class FileController {
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
+    if (!file) return null;
     return {
       url: `/static/${file.filename}`,
       name: file.originalname,
