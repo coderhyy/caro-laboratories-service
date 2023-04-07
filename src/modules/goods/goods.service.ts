@@ -17,10 +17,18 @@ export class GoodsService {
   }
 
   async findAll(query) {
-    const { keyWords = '', page = 1, pageSize = 10 } = query;
+    const { page = 1, pageSize = 10, keyWords, isHomePageDisplay } = query;
+
+    const whereOpt = {};
+    keyWords && Object.assign(whereOpt, { name: Like(`%${keyWords}%`) });
+    isHomePageDisplay &&
+      Object.assign(whereOpt, {
+        isHomePageDisplay: JSON.parse(isHomePageDisplay),
+      });
 
     const [list, total] = await this.goodsRepository.findAndCount({
-      where: { name: Like(`%${keyWords}%`) },
+      where: whereOpt,
+      order: { sort: 'ASC' },
       skip: (page - 1) * pageSize,
       take: pageSize,
     });
