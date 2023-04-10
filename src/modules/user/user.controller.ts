@@ -39,9 +39,8 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('menu')
-  async getUserMenuList(@Req() req) {
-    const role = await this.roleService.findById(req.user.role?.id);
-    return role.menus;
+  getUserMenuList(@Req() req) {
+    return this.roleService.findRoleMenuList(req.user.role?.id);
   }
 
   @Get('list')

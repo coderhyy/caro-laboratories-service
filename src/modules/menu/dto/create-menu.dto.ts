@@ -1,11 +1,4 @@
-import {
-  IsEnum,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  MaxLength,
-} from 'class-validator';
-import { NodeType } from '../entities/menu.entity';
+import { IsInt, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 
 export class CreateMenuDto {
   @IsInt()
@@ -16,14 +9,12 @@ export class CreateMenuDto {
   @IsNotEmpty()
   name: string;
 
-  @IsOptional()
-  linkUrl: string;
+  path: string;
 
   @IsInt()
   @IsOptional()
   sort: number;
 
-  @IsEnum(NodeType)
   @IsOptional()
-  nodeType: NodeType;
+  meta: Record<string, any>;
 }

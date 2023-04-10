@@ -40,9 +40,35 @@ export class RoleService {
 
   async findById(id: number) {
     return await this.roleRepository.findOne({
+      where: { id },
+    });
+  }
+
+  async findRoleMenuList(id: number) {
+    const role = await this.roleRepository.findOne({
       relations: ['menus'],
       where: { id },
     });
+
+    // console.log(role);
+
+    const menuTree = [];
+    const menuMap = new Map();
+    for (const menu of role.menus) {
+      menuMap.set(menu.id, menu);
+
+      if (!menu.parentId) {
+        menuTree.push(menu);
+      } else {
+        const parent = menuMap.get(menu.parentId);
+        if (parent) {
+          parent.children = parent.children ?? [];
+          parent.children.push(menu);
+        }
+      }
+    }
+
+    return menuTree;
   }
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {

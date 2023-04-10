@@ -33,7 +33,7 @@ export class MenuService {
     return this.menuRepository.findTrees();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return `This action returns a #${id} menu`;
   }
 

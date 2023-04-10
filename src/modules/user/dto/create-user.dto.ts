@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: '用户名必填' })
@@ -7,7 +7,13 @@ export class CreateUserDto {
   @IsNotEmpty({ message: '密码必填' })
   readonly password: string;
 
-  @IsNumber()
   @IsOptional()
-  readonly roleId: number;
+  nickname: string;
+
+  @IsOptional()
+  avatar: string;
+
+  @IsInt()
+  @IsOptional()
+  roleId: number;
 }

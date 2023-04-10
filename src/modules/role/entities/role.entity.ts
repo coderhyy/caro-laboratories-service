@@ -10,6 +10,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   Timestamp,
+  TreeChildren,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -33,6 +34,7 @@ export class Role {
   @OneToMany(() => User, (user) => user.role)
   users: User[];
 
+  @TreeChildren()
   @ManyToMany(() => Menu, (menu) => menu.roles)
   @JoinTable()
   menus: Menu[];
