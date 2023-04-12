@@ -33,12 +33,16 @@ export class User {
   @Column({ default: '' })
   avatar: string;
 
+  @Column({ nullable: true })
+  roleId: number;
+
   @CreateDateColumn({ type: 'timestamp' })
   createDate: Timestamp;
 
   @UpdateDateColumn({ type: 'timestamp' })
   updateDate: Timestamp;
 
+  @Exclude()
   @DeleteDateColumn({ type: 'timestamp' })
   deleteDate: Timestamp;
 

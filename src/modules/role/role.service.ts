@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from './entities/role.entity';
 import { Like, Repository } from 'typeorm';
 import { MenuService } from '../menu/menu.service';
+import { Menu } from '../menu/entities/menu.entity';
 
 @Injectable()
 export class RoleService {
@@ -50,25 +51,23 @@ export class RoleService {
       where: { id },
     });
 
-    // console.log(role);
-
-    const menuTree = [];
-    const menuMap = new Map();
-    for (const menu of role.menus) {
-      menuMap.set(menu.id, menu);
-
-      if (!menu.parentId) {
-        menuTree.push(menu);
-      } else {
-        const parent = menuMap.get(menu.parentId);
-        if (parent) {
-          parent.children = parent.children ?? [];
-          parent.children.push(menu);
+    function buildMenuTree(menuItems: Menu[]) {
+      const menuMap: any = {};
+      for (const item of menuItems) {
+        if (!menuMap[item.id]) {
+          menuMap[item.id] = { ...item, children: [] };
         }
+        const menu = menuMap[item.id];
+        if (item.parentId && !menuMap[item.parentId]) {
+          menuMap[item.parentId] = { id: item.parentId, children: [] };
+        }
+        const parent = menuMap[item.parentId];
+        parent?.children.push(menu);
       }
+      return Object.values(menuMap).filter((item: Menu) => !item.parentId);
     }
 
-    return menuTree;
+    return buildMenuTree(role.menus);
   }
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {

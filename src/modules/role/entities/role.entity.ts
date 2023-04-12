@@ -13,6 +13,7 @@ import {
   TreeChildren,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Role {
@@ -28,6 +29,7 @@ export class Role {
   @UpdateDateColumn({ type: 'timestamp' })
   updateDate: Timestamp;
 
+  @Exclude()
   @DeleteDateColumn({ type: 'timestamp' })
   deleteDate: Timestamp;
 

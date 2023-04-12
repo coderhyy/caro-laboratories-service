@@ -24,9 +24,6 @@ export class Menu {
   @Column()
   path: string;
 
-  @Column({ default: 0 })
-  sort: number;
-
   @Column('simple-json', { nullable: true })
   meta: Record<string, any>;
 
@@ -34,6 +31,7 @@ export class Menu {
   @Column({ nullable: true })
   parentId: number;
 
+  @Exclude()
   @DeleteDateColumn()
   deleteDate: Timestamp;
 
