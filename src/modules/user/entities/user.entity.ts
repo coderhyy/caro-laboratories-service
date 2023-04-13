@@ -20,7 +20,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 100 })
+  @Column({ length: 100, unique: true })
   username: string;
 
   @Column({ length: 100, default: '' })

@@ -26,7 +26,7 @@ export class UserController {
     private readonly roleService: RoleService,
   ) {}
 
-  @Post('register')
+  @Post('create')
   create(@Body() createUser: CreateUserDto) {
     return this.userService.register(createUser);
   }
