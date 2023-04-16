@@ -29,6 +29,7 @@ export class RoleService {
     const { keyWords = '', page = 1, pageSize = 10 } = query;
 
     const [list, total] = await this.roleRepository.findAndCount({
+      relations: ['menus'],
       where: {
         name: Like(`%${keyWords}%`),
       },

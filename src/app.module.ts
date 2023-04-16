@@ -8,6 +8,7 @@ import { RoleModule } from './modules/role/role.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { FileModule } from './modules/file/file.module';
 import { GoodsModule } from './modules/goods/goods.module';
+import { VideoModule } from './modules/video/video.module';
 
 import envConfig from '../config/env';
 
@@ -38,6 +39,7 @@ import envConfig from '../config/env';
     MenuModule,
     FileModule,
     GoodsModule,
+    VideoModule,
   ],
   controllers: [],
   providers: [],

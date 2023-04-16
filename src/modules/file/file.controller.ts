@@ -8,7 +8,7 @@ import {
 import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { resolve } from 'path';
+import { extname, resolve } from 'path';
 
 @Controller('file')
 export class FileController {
@@ -23,7 +23,7 @@ export class FileController {
         },
         filename(req, file, cb) {
           const unique = `${Date.now()}${Math.round(Math.random() * 1e9)}`;
-          const imgPath = `${unique}.${file.mimetype.split('/')[1]}`;
+          const imgPath = `${unique}${extname(file.originalname)}`;
           cb(null, imgPath);
         },
       }),
@@ -31,8 +31,12 @@ export class FileController {
         fileSize: 1024 * 1024,
       },
       fileFilter(req, file, cb) {
-        if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
-          cb(new HttpException(`只支持jpg, png格式`, 401), false);
+        if (
+          file.mimetype !== 'image/jpeg' &&
+          file.mimetype !== 'image/png' &&
+          file.mimetype !== 'video/mp4'
+        ) {
+          cb(new HttpException(`只支持jpg, png, mp4格式`, 401), false);
         } else {
           cb(null, true);
         }
