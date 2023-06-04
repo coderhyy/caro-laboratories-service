@@ -57,19 +57,18 @@ export class UserService {
     });
   }
 
-  async update(id: string, user: UpdateUserDto) {
-    const existUser = await this.findOne(id);
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
 
-    if (!existUser) {
+    if (!user) {
       throw new HttpException(`id为${id}的用户不存在`, HttpStatus.BAD_REQUEST);
     }
 
-    const { roleId } = user;
-    const role = roleId
-      ? await this.roleService.findById(roleId)
-      : existUser.role;
+    const { roleId } = updateUserDto;
+    const role = roleId ? await this.roleService.findById(roleId) : user.role;
 
-    const updateUser = this.userRepository.merge(existUser, user, { role });
+    const updateUser = this.userRepository.merge(user, updateUserDto, { role });
+
     return await this.userRepository.save(updateUser);
   }
 

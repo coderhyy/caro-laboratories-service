@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Goods {
+export class Cover {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -17,10 +17,10 @@ export class Goods {
   name: string;
 
   @Column({ default: '' })
-  url: string;
+  foregroundImage: string;
 
-  @Column({ type: 'decimal', scale: 2, default: 0 })
-  price: number;
+  @Column({ default: '' })
+  backgroundImage: string;
 
   @Column({ type: 'int', default: 0 })
   sort: number;
