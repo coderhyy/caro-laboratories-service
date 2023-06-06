@@ -8,15 +8,18 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Searchlight {
+export class Chip {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  url: string;
+  name: string;
 
   @Column()
-  html: string;
+  url: string;
+
+  @Column({ type: 'int', default: 0 })
+  sort: number;
 
   @CreateDateColumn({ type: 'timestamp' })
   createDate: Timestamp;

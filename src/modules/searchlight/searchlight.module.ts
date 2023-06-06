@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { SearchlightService } from './searchlight.service';
 import { SearchlightController } from './searchlight.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Searchlight } from './entities/searchlight.entity';
+import { Chip } from './entities/chip.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Searchlight])],
+  imports: [TypeOrmModule.forFeature([Chip])],
   controllers: [SearchlightController],
   providers: [SearchlightService],
 })

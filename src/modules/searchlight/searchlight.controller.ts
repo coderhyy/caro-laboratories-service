@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { SearchlightService } from './searchlight.service';
 import { CreateSearchlightDto } from './dto/create-searchlight.dto';
@@ -15,14 +16,14 @@ import { UpdateSearchlightDto } from './dto/update-searchlight.dto';
 export class SearchlightController {
   constructor(private readonly searchlightService: SearchlightService) {}
 
-  @Post()
+  @Post('/chip/create')
   create(@Body() createSearchlightDto: CreateSearchlightDto) {
     return this.searchlightService.create(createSearchlightDto);
   }
 
-  @Get()
-  findAll() {
-    return this.searchlightService.findAll();
+  @Get('/chip/list')
+  findAll(@Query() query) {
+    return this.searchlightService.findAll(query);
   }
 
   @Get(':id')
