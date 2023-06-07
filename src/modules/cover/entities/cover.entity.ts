@@ -22,6 +22,12 @@ export class Cover {
   @Column({ default: '' })
   backgroundImage: string;
 
+  @Column({ default: '' })
+  videoUrl: string;
+
+  @Column({ type: 'simple-json' })
+  other: Record<string, any>;
+
   @Column({ type: 'int', default: 0 })
   sort: number;
 
