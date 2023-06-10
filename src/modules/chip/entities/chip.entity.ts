@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   Timestamp,
@@ -15,7 +16,7 @@ export class Chip {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   url: string;
 
   @Column({ type: 'int', default: 0 })
@@ -26,4 +27,7 @@ export class Chip {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updateDate: Timestamp;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deleteDate: Timestamp;
 }

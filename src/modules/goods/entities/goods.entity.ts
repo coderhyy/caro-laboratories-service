@@ -25,6 +25,9 @@ export class Goods {
   @Column({ type: 'int', default: 0 })
   sort: number;
 
+  @Column({ type: 'simple-json' })
+  locale: Record<string, any>;
+
   @CreateDateColumn({ type: 'timestamp' })
   createDate: Timestamp;
 

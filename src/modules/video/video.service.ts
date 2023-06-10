@@ -27,8 +27,8 @@ export class VideoService {
     return { list, total };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} video`;
+  findOne() {
+    return this.videoRepository.findOne({ where: { state: true } });
   }
 
   update(id: number, updateVideoDto: UpdateVideoDto) {

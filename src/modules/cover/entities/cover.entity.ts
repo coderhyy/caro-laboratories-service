@@ -26,7 +26,7 @@ export class Cover {
   videoUrl: string;
 
   @Column({ type: 'simple-json' })
-  other: Record<string, any>;
+  locale: Record<string, any>;
 
   @Column({ type: 'int', default: 0 })
   sort: number;

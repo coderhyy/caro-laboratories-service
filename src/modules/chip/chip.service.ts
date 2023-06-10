@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSearchlightDto } from './dto/create-searchlight.dto';
-import { UpdateSearchlightDto } from './dto/update-searchlight.dto';
+import { CreateChipDto } from './dto/create-chip.dto';
+import { UpdateChipDto } from './dto/update-chip.dto';
+import { Chip } from './entities/chip.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Chip } from './entities/chip.entity';
 
 @Injectable()
-export class SearchlightService {
+export class ChipService {
   constructor(
     @InjectRepository(Chip)
     private repository: Repository<Chip>,
   ) {}
 
-  create(createSearchlightDto: CreateSearchlightDto) {
-    return this.repository.save(createSearchlightDto);
+  create(createChipDto: CreateChipDto) {
+    return this.repository.save(createChipDto);
   }
 
   async findAll(query) {
@@ -29,14 +29,14 @@ export class SearchlightService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} searchlight`;
+    return `This action returns a #${id} chip`;
   }
 
-  update(id: number, updateSearchlightDto: UpdateSearchlightDto) {
-    return `This action updates a #${id} searchlight`;
+  update(id: number, updateChipDto: UpdateChipDto) {
+    return this.repository.update(id, updateChipDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} searchlight`;
+    return this.repository.softDelete(id);
   }
 }

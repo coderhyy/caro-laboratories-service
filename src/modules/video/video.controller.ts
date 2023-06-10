@@ -26,9 +26,9 @@ export class VideoController {
     return this.videoService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.videoService.findOne(+id);
+  @Get()
+  findOne() {
+    return this.videoService.findOne();
   }
 
   @Put('update/:id')

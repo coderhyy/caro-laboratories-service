@@ -9,8 +9,9 @@ import { MenuModule } from './modules/menu/menu.module';
 import { FileModule } from './modules/file/file.module';
 import { GoodsModule } from './modules/goods/goods.module';
 import { VideoModule } from './modules/video/video.module';
-import { SearchlightModule } from './modules/searchlight/searchlight.module';
 import { CoverModule } from './modules/cover/cover.module';
+import { ChipModule } from './modules/chip/chip.module';
+import { InfoModule } from './modules/info/info.module';
 
 import envConfig from '../config/env';
 
@@ -42,8 +43,9 @@ import envConfig from '../config/env';
     FileModule,
     GoodsModule,
     VideoModule,
-    SearchlightModule,
     CoverModule,
+    ChipModule,
+    InfoModule,
   ],
   controllers: [],
   providers: [],
