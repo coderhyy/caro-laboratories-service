@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { DgSunriseService } from './dg-sunrise.service';
 import { CreateDgSunriseDto } from './dto/create-dg-sunrise.dto';
@@ -15,7 +16,7 @@ import { UpdateDgSunriseDto } from './dto/update-dg-sunrise.dto';
 export class DgSunriseController {
   constructor(private readonly dgSunriseService: DgSunriseService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createDgSunriseDto: CreateDgSunriseDto) {
     return this.dgSunriseService.create(createDgSunriseDto);
   }
@@ -25,8 +26,8 @@ export class DgSunriseController {
     return this.dgSunriseService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get('detail')
+  findOne(@Query('id') id: string) {
     return this.dgSunriseService.findOne(+id);
   }
 
