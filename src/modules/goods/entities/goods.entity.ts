@@ -19,7 +19,7 @@ export class Goods {
   @Column({ default: '' })
   url: string;
 
-  @Column({ type: 'decimal', scale: 2, default: 0 })
+  @Column({ type: 'decimal', scale: 2, precision: 6, default: 0 })
   price: number;
 
   @Column({ type: 'int', default: 0 })

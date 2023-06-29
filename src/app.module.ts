@@ -12,6 +12,7 @@ import { VideoModule } from './modules/video/video.module';
 import { CoverModule } from './modules/cover/cover.module';
 import { ChipModule } from './modules/chip/chip.module';
 import { InfoModule } from './modules/info/info.module';
+import { DgSunriseModule } from './modules/dg-sunrise/dg-sunrise.module';
 
 import envConfig from '../config/env';
 
@@ -46,6 +47,7 @@ import envConfig from '../config/env';
     CoverModule,
     ChipModule,
     InfoModule,
+    DgSunriseModule,
   ],
   controllers: [],
   providers: [],
