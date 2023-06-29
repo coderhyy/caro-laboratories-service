@@ -10,4 +10,10 @@ export class DgSunrise {
 
   @Column()
   email: string;
+
+  @Column({ type: 'simple-json' })
+  zh: Record<string, unknown>;
+
+  @Column({ type: 'simple-json' })
+  en: Record<string, unknown>;
 }
