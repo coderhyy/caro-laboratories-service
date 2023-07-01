@@ -28,7 +28,7 @@ export class FileController {
         },
       }),
       limits: {
-        fileSize: 1024 * 1024,
+        fileSize: 1024 * 1024 * 100,
       },
       fileFilter(req, file, cb) {
         if (
