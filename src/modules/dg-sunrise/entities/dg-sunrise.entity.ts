@@ -11,6 +11,9 @@ export class DgSunrise {
   @Column()
   email: string;
 
+  @Column({ default: false })
+  showGoods: boolean;
+
   @Column({ type: 'simple-json' })
   zh: Record<string, unknown>;
 
